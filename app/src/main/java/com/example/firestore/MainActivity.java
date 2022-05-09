@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.firestore.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -35,22 +37,30 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-//        db.collection("profile")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                //Log.d(TAG, document.getId() + " => " + document.getData());
-//                                System.out.println("get +++++++ success");
-//                            }
-//                        } else {
-//                            //Log.w(TAG, "Error getting documents.", task.getException());
-//                            System.out.println("get ------ error");
-//                        }
-//                    }
-//                });
+        DocumentReference docRef = db.collection("User").document("Profile");
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        String name = document.getData().get("Name").toString();
+                        binding.nameText.setText(name);
+                        String email = document.getData().get("Email").toString();
+                        binding.emailText.setText(email);
+                        String address = document.getData().get("Address").toString();
+                        binding.addressText.setText(address);
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "No such document", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "get failed with " + task.getException(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
         binding.editBtn.setOnClickListener(new View.OnClickListener() {
