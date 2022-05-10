@@ -90,8 +90,6 @@ public class SignUp extends AppCompatActivity {
                                 Toast.makeText(SignUp.this, "Error with Firestore", Toast.LENGTH_SHORT).show();
                             }
                         });
-
-
             }
         });
     }

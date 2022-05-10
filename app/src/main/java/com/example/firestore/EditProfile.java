@@ -40,24 +40,6 @@ public class EditProfile extends AppCompatActivity {
 
         DocumentReference docRef = db.collection("User").document(email);
 
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        String email = document.getData().get("Email").toString();
-//                        binding.emailText.setText(email);
-//                    } else {
-//                        Toast.makeText(EditProfile.this, "No such document", Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    Toast.makeText(EditProfile.this, "get failed with " + task.getException(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
-
         binding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
