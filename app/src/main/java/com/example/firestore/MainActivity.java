@@ -58,13 +58,19 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(MainActivity.this, "Authentication succeed.",
                                     Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(MainActivity.this, Profile.class));
+
+                            //将email传到profile
+                            Intent intent = new Intent(MainActivity.this, Profile.class);
+                            intent.putExtra("email", binding.emailText.getText().toString());
+                            startActivity(intent);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
+
         });
     }
 }

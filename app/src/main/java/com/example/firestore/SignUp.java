@@ -13,15 +13,22 @@ import android.widget.Toast;
 
 import com.example.firestore.databinding.ActivitySignUpBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
     private FirebaseAuth mAuth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     @Override
@@ -61,6 +68,30 @@ public class SignUp extends AppCompatActivity {
                                 }
                             }
                         });
+
+                Map<String, Object> profile = new HashMap<>();
+                profile.put("Address", binding.addressText.getText().toString());
+                profile.put("Email", binding.emailText.getText().toString());
+                profile.put("Name", binding.firstNameText.getText().toString() + " " + binding.lastNameText.getText().toString());
+
+                db.collection("User").document(binding.emailText.getText().toString())
+                        .set(profile)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //Log.d(TAG, "DocumentSnapshot successfully written!");
+                                Toast.makeText(SignUp.this, "The user data is successfully added", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                //Log.w(TAG, "Error writing document", e);
+                                Toast.makeText(SignUp.this, "Error with Firestore", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
             }
         });
     }

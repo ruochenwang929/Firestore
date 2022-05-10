@@ -28,7 +28,10 @@ public class Profile extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        DocumentReference docRef = db.collection("User").document("Profile");
+        final Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+
+        DocumentReference docRef = db.collection("User").document(email);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -39,7 +42,7 @@ public class Profile extends AppCompatActivity {
 
                         String name = document.getData().get("Name").toString();
                         binding.nameText.setText(name);
-                        String email = document.getData().get("Email").toString();
+                        //String email = document.getData().get("Email").toString();
                         binding.emailText.setText(email);
                         String address = document.getData().get("Address").toString();
                         binding.addressText.setText(address);
@@ -57,7 +60,11 @@ public class Profile extends AppCompatActivity {
         binding.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Profile.this, EditProfile.class));
+
+                //将email传到edit profile
+                Intent intent = new Intent(Profile.this, EditProfile.class);
+                intent.putExtra("email", email);
+                startActivity(intent);
             }
         });
 
