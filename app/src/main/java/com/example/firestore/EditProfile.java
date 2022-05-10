@@ -79,7 +79,7 @@ public class EditProfile extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 System.out.println("success+++++++");
                                 Toast.makeText(EditProfile.this, "Save successful", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(EditProfile.this, MainActivity.class));
+                                startActivity(new Intent(EditProfile.this, Profile.class));
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
