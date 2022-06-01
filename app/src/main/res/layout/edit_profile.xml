@@ -85,5 +85,20 @@
         android:text="Cancel"
         android:layout_gravity="center"/>
 
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        />
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="30dp"/>
+
 
 </LinearLayout>

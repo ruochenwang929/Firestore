@@ -4,7 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.TargetApi;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+
         binding.signInBtn.setOnClickListener(v ->  {
             mAuth.signInWithEmailAndPassword(binding.emailText.getText().toString(), binding.passwordText.getText().toString())
                     .addOnCompleteListener(this, task ->  {
@@ -59,10 +66,22 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Authentication succeed.",
                                     Toast.LENGTH_SHORT).show();
 
+                            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clipData = ClipData.newPlainText("Name", "XiaoMing");
+                            cm.setPrimaryClip(clipData);
+
                             //将email传到profile
                             Intent intent = new Intent(MainActivity.this, Profile.class);
-                            intent.putExtra("email", binding.emailText.getText().toString());
+                            Bundle bundle = new Bundle();
+                            bundle.putString("email", binding.emailText.getText().toString());
+                            //intent.putExtra("email", binding.emailText.getText().toString());
+                            bundle.putString("text", "message from main activity");
+                            intent.putExtras(bundle);
                             startActivity(intent);
+
+                            Intent intent1 = new Intent(MainActivity.this, EditProfile.class);
+                            intent1.putExtra("str", "跨activity");
+                            startActivity(intent1);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -72,5 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     });
 
         });
+
     }
 }

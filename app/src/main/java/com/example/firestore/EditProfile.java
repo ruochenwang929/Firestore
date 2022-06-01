@@ -3,7 +3,12 @@ package com.example.firestore;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.TargetApi;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,8 +40,17 @@ public class EditProfile extends AppCompatActivity {
         setContentView(view);
 
         final Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
+//        String email = intent.getStringExtra("email");
+//        String text = intent.getStringExtra("text");
+        Bundle bundle = getIntent().getExtras();
+        String email = bundle.getString("email");
+        String text = bundle.getString("text");
         binding.emailText.setText(email);
+        binding.text2.setText(text);
+
+        final Intent intent1 = getIntent();
+        String str = intent.getStringExtra("str");
+        binding.text3.setText(str);
 
         DocumentReference docRef = db.collection("User").document(email);
 
